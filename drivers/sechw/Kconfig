@@ -1,0 +1,11 @@
+#
+# Secure hardware configuration
+#
+
+menu "Secure Hardware Devices"
+
+#TrustZone
+source "drivers/sechw/trustzone/Kconfig"
+
+endmenu
+
