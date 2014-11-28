@@ -6,23 +6,27 @@
 
 menuconfig SECURE_HARDWARE
 	tristate "Secure Hardware Support"
-	depends on ARM
 	select SECURITYFS
 	---help---
 	If you have a piece of secure hardware that you want to configure say Yes.
 	To compile this driver as a module choose M here. If unsure say N.
 
-
 if SECURE_HARDWARE
+
 config ARM_TRUSTZONE
 	tristate "TrustZone Support"
-	# depends on HAS_IOMEM //XXX: We need to look into this
-	# XXX: Can we make it depend on ARM compatible processors?
-	# XXX: We need to look at the dependencies with TIM
+	depends on ARM
 	---help---
 	If you have an ARM processor that is compatible with TrustZone and were
 	the TrustZone security extensions are anabled say Yes to get support
 	from within the Linux kernel. If unsure, say N.
 	# TODO: We need to specify what are the dependencies.
+
+config TRUSTZONE_SIERRAWARE
+	tristate "Sierraware TrustZone driver"
+	depends on ARM_TRUSTZONE
+	---help---
+	If you use Sierraware's SierraTEE or OpenVirtualization say Yes to get
+	support from within the Linux Kernel. If unsure, say N.
 
 endif # SECURE_HARDWARE
