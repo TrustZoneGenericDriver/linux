@@ -13,21 +13,10 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>
 
-# Generic Trusted Execution Environment Configuration
-config TEE_GENERIC
-	bool "Trusted Execution Environment support"
+# OP-TEE Trusted Execution Environment Configuration
+config TEE_OPTEE
+	tristate "OP-TEE"
 	default n
-	select DMA_SHARED_BUFFER
+	depends on TEE_GENERIC
 	help
-	  This implements a generic interface towards a Trusted Execution
-	  Environment (TEE).
-
-if TEE_GENERIC
-
-menu "TEE drivers"
-
-source "drivers/sec-hw/optee/Kconfig"
-
-endmenu
-
-endif
+	  This implements the OP-TEE Trusted Execution Environment (TEE) driver.
