@@ -211,4 +211,11 @@ struct tee_shm *tee_shm_get_from_fd(int fd);
  */
 void tee_shm_put(struct tee_shm *shm);
 
+/**
+ * tee_shm_fd() - Increase reference count and return file descriptor
+ * @shm:	Shared memory handle
+ * @returns user space file descriptor to shared memory
+ */
+int tee_shm_fd(struct tee_shm *shm);
+
 #endif /*__TEE_DRV_H*/
