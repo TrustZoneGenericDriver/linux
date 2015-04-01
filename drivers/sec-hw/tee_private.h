@@ -35,8 +35,6 @@ struct tee_shm {
 	u32 flags;
 };
 
-int tee_shm_fd(struct tee_shm *shm);
 void tee_shm_free_by_teefilp(struct tee_filp *teefilp);
-
 
 #endif /*TEE_PRIVATE_H*/

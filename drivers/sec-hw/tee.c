@@ -15,8 +15,11 @@
 #include <linux/fs.h>
 #include <linux/module.h>
 #include <linux/slab.h>
-#include <linux/sec-hw/tee_drv.h>
+#include <linux/fdtable.h>
+#include <linux/thread_info.h>
 #include <linux/uaccess.h>
+#include <linux/sched.h>
+#include <linux/sec-hw/tee_drv.h>
 #include "tee_private.h"
 
 static int tee_open(struct inode *inode, struct file *filp)
@@ -91,6 +94,8 @@ static long tee_ioctl_shm_alloc(struct tee_filp *teefilp,
 	if (data.flags)
 		return -EINVAL;
 
+	data.fd = -1;
+
 	shm = tee_shm_alloc(teefilp->teedev, teefilp, data.size,
 			    TEE_SHM_MAPPED | TEE_SHM_DMA_BUF);
 	if (IS_ERR(shm))
@@ -114,6 +119,8 @@ static long tee_ioctl_shm_alloc(struct tee_filp *teefilp,
 	}
 	return 0;
 err:
+	if (data.fd >= 0)
+		__close_fd(current->files, data.fd);
 	tee_shm_free(shm);
 	return ret;
 }

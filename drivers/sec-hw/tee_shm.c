@@ -182,12 +182,17 @@ EXPORT_SYMBOL_GPL(tee_shm_alloc);
 int tee_shm_fd(struct tee_shm *shm)
 {
 	u32 req_flags = TEE_SHM_MAPPED | TEE_SHM_DMA_BUF;
+	int fd;
 
 	if ((shm->flags & req_flags) != req_flags)
 		return -EINVAL;
 
-	return dma_buf_fd(shm->dmabuf, O_CLOEXEC);
+	fd = dma_buf_fd(shm->dmabuf, O_CLOEXEC);
+	if (fd >= 0)
+		get_dma_buf(shm->dmabuf);
+	return fd;
 }
+EXPORT_SYMBOL_GPL(tee_shm_fd);
 
 static void tee_shm_release(struct tee_shm *shm)
 {
